@@ -6,10 +6,14 @@ import (
 )
 
 type width8 interface {
-	~uint8 | ~int8
+	~uint8 | ~int8 // ~を付けると、int8又はint8を継承した値を扱える（汎用的）
 }
 
 func BinStr[T width8](n T) string {
+	/* up := unsafe.Pointer(&n) //Pointer 型
+	up8 := (*uint8)(up) //Pointer 型
+	u8 := *up8 // uint8型
+	以上3行は、以下1行で書ける */
 	u8 := *(*uint8)(unsafe.Pointer(&n))
 	return fmt.Sprintf("%08b", u8)
 }
@@ -44,40 +48,49 @@ func main() {
 		fmt.Printf("%04b | 0001 => %04b\n", n, n|0b0001)
 		fmt.Printf("%04b & 0001 => %04b\n", n, n&0b0001)
 		fmt.Println()
-		for i := 0; i < 16; i++ {
-			fmt.Printf("%04b & 1100 => %04b\n", i, i&0b1100)  // AND 特定ビット(0のビット)をオフにする
-			fmt.Printf("%04b | 1110 => %04b\n", i, i|0b1110) // OR 特定ビット(1のビット)をオンにする
-			fmt.Printf("%04b ^ 1111 => %04b\n", i, i^0b1111) // XOR, EOR 特定ビット(1のビット)を反転する
-		}
 	*/
 
-	/*
-		論理積（AND）
-		0 & 0 = 0	F & F = F
-		0 & 1 = 0	F & F = F
-		1 & 0 = 0	T & F = F
-		1 & 1 = 1	T & T = T
+	/* or i := 0; i < 16; i++ {
+		fmt.Printf("%04b & 1001 => %04b\n", i, i&0b1010) // AND 特定ビット(0のビット)をオフにする
+		// fmt.Printf("%04b | 1110 => %04b\n", i, i|0b1010) // OR 特定ビット(1のビット)をオンにする
+		// fmt.Printf("%04b ^ 1111 => %04b\n", i, i^0b1010) // XOR, EOR 特定ビット(1のビット)を反転する
+	}
 
-		論理和（OR）
-		0 | 0 = 0	F | F = F
-		0 | 1 = 1	F | T = T
-		1 | 0 = 1	T | F = T
-		1 | 1 = 1	T | T = T
+	for i := 0; i < 16; i++ {
+		fmt.Printf("%04b | 1110 => %04b\n", i, i|0b1010) // OR 特定ビット(1のビット)をオンにする
+	}
 
-		排他的論理和（XOR）
-		0 ^ 0 = 0	F ^ F = F
-		0 ^ 1 = 1	F ^ T = T
-		1 ^ 0 = 1	T ^ F = T
-		1 ^ 1 = 0	T ^ T = F
-	*/
+	for i := 0; i < 16; i++ {
+		fmt.Printf("%04b ^ 1111 => %04b\n", i, i^0b1010) // XOR, EOR 特定ビット(1のビット)を反転する
+	} */
 
-	/*
-		n := 0b0111
-		fmt.Printf("%04b (%d) << 1 = %04b (%d) \n", n, n, n<<1, n<<1)
-		fmt.Printf("%04b (%d) >> 1 = %04b (%d) \n", n, n, n>>1, n>>1)
-	*/
+	// n := 0b0111
+	// fmt.Printf("%04b (%d) << 1 = %04b (%d) \n", n, n, n<<1, n<<1)
+	// fmt.Printf("%04b (%d) >> 1 = %04b (%d) \n", n, n, n>>1, n>>1)
 
-	// n := NewUint8(0b11111010)
-	n := NewInt8(0b11111010) // 算術シフト
+	n := NewUint8(0b11111010)
 	fmt.Printf("%s (%d) %s(%d) \n", BinStr(n), n, BinStr(n>>1), n>>1)
+	
+	n2 := NewInt8(0b11111010) // 算術シフト
+	fmt.Printf("%s (%d) %s(%d) \n", BinStr(n2), n2, BinStr(n2>>1), n2>>1)
 }
+
+/*
+	論理積（AND）
+	0 & 0 = 0	F & F = F
+	0 & 1 = 0	F & F = F
+	1 & 0 = 0	T & F = F
+	1 & 1 = 1	T & T = T
+
+	論理和（OR）
+	0 | 0 = 0	F | F = F
+	0 | 1 = 1	F | T = T
+	1 | 0 = 1	T | F = T
+	1 | 1 = 1	T | T = T
+
+	排他的論理和（XOR）
+	0 ^ 0 = 0	F ^ F = F
+	0 ^ 1 = 1	F ^ T = T
+	1 ^ 0 = 1	T ^ F = T
+	1 ^ 1 = 0	T ^ T = F
+*/
