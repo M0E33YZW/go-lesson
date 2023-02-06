@@ -30,7 +30,8 @@ func (o Order) has(n int) bool {
 func main() {
 	order := Order(0b0011)
 
-/* 	if order&BURGER != 0 {
+	/* 	
+	if order&BURGER != 0 {
 		fmt.Println("BURGER")
 	}
 	if order&BURGER != 0 {
@@ -42,6 +43,7 @@ func main() {
 	if order&BURGER != 0 {
 		fmt.Println("NUGGET")
 	} */
+
 	if order.has(BURGER) != 0 {
 		fmt.Println("BURGER")
 	}
