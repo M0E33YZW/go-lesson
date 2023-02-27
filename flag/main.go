@@ -44,17 +44,17 @@ func main() {
 		fmt.Println("NUGGET")
 	} */
 
-	if order.has(BURGER) != 0 {
+	if order.has(BURGER) != true {
 		fmt.Println("BURGER")
 	}
 	/* 
-	if order.has(POTATO) != 0 {
+	if order.has(POTATO) != true {
 		fmt.Println("POTATO")
 	}
-	if order.has(COFFEE) != 0 {
+	if order.has(COFFEE) != true {
 		fmt.Println("COFFEE")
 	}
-	if order.has(NUGGET) != 0 {
+	if order.has(NUGGET) != true {
 		fmt.Println("NUGGET")
 	} */
 }
