@@ -20,7 +20,7 @@ func NewIpv4(s string) (*Ipv4, error) {
 	arr1 := strings.Split(s, ".")
 	fmt.Println(arr1)
 	if len(arr1) != 4 {
-		return nil, fmt.Errorf(".が4つ以上あります")
+		return nil, fmt.Errorf(".が4つではありません")
 	}
 
 	i, _ := strconv.Atoi(arr1[0])
