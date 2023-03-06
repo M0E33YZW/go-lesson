@@ -13,6 +13,7 @@ https://ja.wikipedia.org/wiki/IP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9#/media/%E3%
 */
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -21,22 +22,33 @@ import (
 type Ipv4 uint32
 
 func NewIpv4(s string) (*Ipv4, error) {
-	arr1 := strings.Split(s, ".")
-	fmt.Println(arr1)
-	if len(arr1) != 4 {
+	var bin uint32
+
+	a := strings.Split(s, ".")
+	// fmt.Println("a:", a)
+	if len(a) != 4 {
 		return nil, fmt.Errorf("IPアドレスではありません")
 	}
 
-	binary := ""
-	for _, s := range arr1 {
-		// fmt.Printf("%s\n", s)
-		i, _ := strconv.Atoi(s)
-		// fmt.Printf("%08b\n", i)
-		binary += fmt.Sprintf("%08b", i)
-	}
-	fmt.Println(binary)
+	offset := 24
+	for _, s := range a {
+		n, err := strconv.Atoi(s)
+		if err != nil {
+			return nil, err
+		}
+		if n < 0 {
+			return nil, errors.New("0以上の値でなければいけません")
+		}
+		if n > 255 {
+			return nil, errors.New("255以下の値でなければいけません")
+		}
 
-	return nil, nil
+		bin |= uint32(n) << offset
+		offset -= 8
+	}
+	fmt.Printf("%032b\n", bin)
+
+	return (*Ipv4)(&bin), nil
 }
 
 func (i *Ipv4) String() string {
@@ -50,13 +62,16 @@ func (i *Ipv4) IsInSameSubnet(ip *Ipv4, mask *Ipv4) bool {
 }
 
 func main() {
+	NewIpv4("172.16.254.1")
+	_, err := NewIpv4("192.168.22.11")
+
 	// IP アドレス 1
-	ip1, err := NewIpv4("192.168.0.1")
+	// ip1, err := NewIpv4("192.168.0.1")
 	if err != nil {
 		panic(err)
 	}
 
-	// IP アドレス 2
+	/* // IP アドレス 2
 	ip2, err := NewIpv4("192.168.0.100")
 	if err != nil {
 		panic(err)
@@ -74,5 +89,5 @@ func main() {
 	}
 
 	fmt.Println(ip1.IsInSameSubnet(ip2, mask)) // true
-	fmt.Println(ip1.IsInSameSubnet(ip3, mask)) // false
+	fmt.Println(ip1.IsInSameSubnet(ip3, mask)) // false */
 }
