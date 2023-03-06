@@ -4,6 +4,10 @@ package main
 このプログラムは、IPv4 アドレスを表す型 Ipv4 を定義します。
 Ipv4 型は他の IPv4 アドレスと同じサブネットにあるかどうかを判定するメソッドを持ちます。
 
+1. サブネットマスクとIPアドレスを2進数に変換する
+2. IPアドレスとサブネットマスクとの論理積（AND）を求める
+3. 求めた結果を10進数に戻す
+
 参考：
 https://ja.wikipedia.org/wiki/IP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9#/media/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB:Ipv4_address_ja.svg
 */
@@ -18,16 +22,19 @@ type Ipv4 uint32
 
 func NewIpv4(s string) (*Ipv4, error) {
 	arr1 := strings.Split(s, ".")
-	// fmt.Println(arr1)
+	fmt.Println(arr1)
 	if len(arr1) != 4 {
 		return nil, fmt.Errorf("IPアドレスではありません")
 	}
 
+	binary := ""
 	for _, s := range arr1 {
-		fmt.Printf("%s\n", s)
+		// fmt.Printf("%s\n", s)
 		i, _ := strconv.Atoi(s)
-		fmt.Printf("%08b\n", i)
+		// fmt.Printf("%08b\n", i)
+		binary += fmt.Sprintf("%08b", i)
 	}
+	fmt.Println(binary)
 
 	return nil, nil
 }
