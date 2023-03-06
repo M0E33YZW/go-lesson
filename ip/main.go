@@ -18,14 +18,16 @@ type Ipv4 uint32
 
 func NewIpv4(s string) (*Ipv4, error) {
 	arr1 := strings.Split(s, ".")
-	fmt.Println(arr1)
+	// fmt.Println(arr1)
 	if len(arr1) != 4 {
-		return nil, fmt.Errorf(".が4つではありません")
+		return nil, fmt.Errorf("IPアドレスではありません")
 	}
 
-	i, _ := strconv.Atoi(arr1[0])
-	fmt.Println(i)
-	fmt.Printf("%08b\n", i)
+	for _, s := range arr1 {
+		fmt.Printf("%s\n", s)
+		i, _ := strconv.Atoi(s)
+		fmt.Printf("%08b\n", i)
+	}
 
 	return nil, nil
 }
