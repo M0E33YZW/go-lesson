@@ -11,8 +11,8 @@ type width8 interface {
 }
 
 func BinStr[T width8](n T) string {
-	/* up := unsafe.Pointer(&n) //Pointer 型
-	up8 := (*uint8)(up)         //Pointer 型
+	/* up := unsafe.Pointer(&n) // Pointer型
+	up8 := (*uint8)(up)         // Pointer型
 	u8 := *up8                  // uint8型 */
 
 	u8 := *(*uint8)(unsafe.Pointer(&n))
