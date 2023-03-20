@@ -59,6 +59,8 @@ func (i *Ipv4) IsInSameSubnet(ip *Ipv4, mask *Ipv4) bool {
 	fmt.Println("i :", i)
 	fmt.Println("ip:", ip)
 	fmt.Println("m :", mask)
+	// サブネットのネットワークアドレスを計算(&)
+	// ネットワークアドレスが同じであれば同じサブネットに属する
 	return false
 }
 
