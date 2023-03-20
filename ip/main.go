@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unsafe"
 )
 
 type Ipv4 uint32
@@ -42,54 +43,55 @@ func NewIpv4(s string) (*Ipv4, error) {
 		bin |= uint32(n) << offset
 		offset -= 8
 	}
-
-	fmt.Printf("Bin: %b\n", bin)
+	fmt.Print("\n&Bin:", &bin)
+	fmt.Print("\nBin:", bin)
 	return (*Ipv4)(&bin), nil
 }
 
 func (i *Ipv4) String() string {
-	b1 := uint8((i >> 24) & 0xFF)
-	b2 := uint8((i >> 16) & 0xFF)
-	b3 := uint8((i >> 8) & 0xFF)
-	b4 := uint8(i & 0xFF)
+	ip := *(*Ipv4)(unsafe.Pointer(i))
+	fmt.Printf("\n%032b", ip)
+
+	b1 := (ip >> 24) & 0xFF
+	b2 := (ip >> 16) & 0xFF
+	b3 := (ip >> 8) & 0xFF
+	b4 := ip & 0xFF
+
 	return fmt.Sprintf("%d.%d.%d.%d", b1, b2, b3, b4)
 }
 
+// サブネットのネットワークアドレスを&計算
+// ネットワークアドレスが同じであれば、同じサブネットに属する
 func (i *Ipv4) IsInSameSubnet(ip *Ipv4, mask *Ipv4) bool {
-	fmt.Println("i :", i)
-	fmt.Println("ip:", ip)
-	fmt.Println("m :", mask)
-	// サブネットのネットワークアドレスを計算(&)
-	// ネットワークアドレスが同じであれば同じサブネットに属する
-	return false
+	a := *(*Ipv4)(unsafe.Pointer(i))
+	b := *(*Ipv4)(unsafe.Pointer(ip))
+	msk := *(*Ipv4)(unsafe.Pointer(mask))
+
+	return (a&msk == b&msk)
 }
 
 func main() {
-	// NewIpv4("172.16.254.1")  // test data
+	NewIpv4("172.16.254.1")  // test data
 
 	// IP アドレス 1
 	ip1, err := NewIpv4("192.168.0.1")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("ip1:", ip1)
 
 	// IP アドレス 2
 	ip2, err := NewIpv4("192.168.0.100")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("ip2:", ip2)
 
 	// IP アドレス 3
 	ip3, err := NewIpv4("192.168.1.1")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("ip3:", ip3)
 
 	mask, err := NewIpv4("255.255.255.0")
-	fmt.Println("mas:", mask)
 	if err != nil {
 		panic(err)
 	}
