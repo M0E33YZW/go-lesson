@@ -71,7 +71,7 @@ func (i *Ipv4) IsInSameSubnet(ip *Ipv4, mask *Ipv4) bool {
 }
 
 func main() {
-	NewIpv4("172.16.254.1")  // test data
+	// NewIpv4("172.16.254.1")  // test data
 
 	// IP アドレス 1
 	ip1, err := NewIpv4("192.168.0.1")
