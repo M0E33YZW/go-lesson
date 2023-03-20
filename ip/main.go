@@ -48,11 +48,11 @@ func NewIpv4(s string) (*Ipv4, error) {
 }
 
 func (i *Ipv4) String() string {
-	fmt.Printf("str: %b\n", i)
-	// fmt.Printf("%d\n", i)
-	// fmt.Printf("%o\n", i)
-
-	return ""
+	b1 := uint8((i >> 24) & 0xFF)
+	b2 := uint8((i >> 16) & 0xFF)
+	b3 := uint8((i >> 8) & 0xFF)
+	b4 := uint8(i & 0xFF)
+	return fmt.Sprintf("%d.%d.%d.%d", b1, b2, b3, b4)
 }
 
 func (i *Ipv4) IsInSameSubnet(ip *Ipv4, mask *Ipv4) bool {
@@ -80,11 +80,11 @@ func main() {
 	fmt.Println("ip2:", ip2)
 
 	// IP アドレス 3
-	/* ip3, err := NewIpv4("192.168.1.1")
-	fmt.Println("3: ", ip3)
+	ip3, err := NewIpv4("192.168.1.1")
 	if err != nil {
 		panic(err)
-	} */
+	}
+	fmt.Println("ip3:", ip3)
 
 	mask, err := NewIpv4("255.255.255.0")
 	fmt.Println("mas:", mask)
@@ -93,5 +93,5 @@ func main() {
 	}
 
 	fmt.Println(ip1.IsInSameSubnet(ip2, mask)) // true
-	// fmt.Println(ip1.IsInSameSubnet(ip3, mask)) // false
+	fmt.Println(ip1.IsInSameSubnet(ip3, mask)) // false
 }
